@@ -1,0 +1,29 @@
+[
+  {
+    "version": "0.1.0",
+    "bump": "minor",
+    "stage": "Draft",
+    "date": "2026-06-07",
+    "changes": [
+      {"entryId": "A1.1", "change": "added"},
+      {"entryId": "A1.2", "change": "added"},
+      {"entryId": "A1.3", "change": "added"},
+      {"entryId": "A1.4", "change": "added"},
+      {"entryId": "A1.5", "change": "added"},
+      {"entryId": "A1.6", "change": "added"},
+      {"entryId": "A2.1", "change": "added"},
+      {"entryId": "A2.2", "change": "added"},
+      {"entryId": "A2.3", "change": "added"},
+      {"entryId": "A2.4", "change": "added"},
+      {"entryId": "A2.5", "change": "added"},
+      {"entryId": "A3.1", "change": "added"},
+      {"entryId": "A3.2", "change": "added"},
+      {"entryId": "A3.3", "change": "added"},
+      {"entryId": "A3.4", "change": "added"},
+      {"entryId": "A4.1", "change": "added"},
+      {"entryId": "A4.2", "change": "added"},
+      {"entryId": "A4.3", "change": "added"},
+      {"entryId": "A4.4", "change": "added"}
+    ]
+  }
+]

@@ -4,7 +4,7 @@
 
 ---
 
-你在 `~/Desktop/agent-native`（git 仓），一个制定《Agent-Native 软件设计规范》的项目——
+你在 `~/Desktop/agent-native`（git 仓），一个制定《Agent-Native 规范》(ANS) 的项目——
 规范与技术栈、领域无关：当软件的开发者与消费者都是 AI Agent 时如何设计。
 
 先按序读：`STATUS.md`（现状/待办/决策/不变量）→ `SPEC.md`（规范本体，RFC 2119）→

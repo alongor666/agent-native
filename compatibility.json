@@ -1,0 +1,10 @@
+[
+  {
+    "fromVersion": null,
+    "toVersion": "0.1.0",
+    "breaking": false,
+    "removedEntryIds": [],
+    "tightenedEntryIds": [],
+    "note": "首个草案版本，无前序，无破坏。"
+  }
+]

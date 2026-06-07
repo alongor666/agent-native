@@ -1,0 +1,75 @@
+{
+  "spec": "Agent-Native Specification",
+  "abbrev": "ANS",
+  "version": "0.1.0",
+  "stage": "Draft",
+  "license": "CC-BY-4.0",
+  "rfc2119": true,
+  "source": "SPEC.md",
+  "note": "机器可读的规范契约。从 SPEC.md / CHECKLIST.md / ASSESSMENT.md 派生，由 tools/ans-lint.py 锁一致（公理①）。clause text 与 CHECKLIST 逐字一致；clause id 与 ASSESSMENT 一致。",
+  "fourQuestions": [
+    {"id": "Q1", "axiom": "axiom1", "name": "契约", "text": "陌生 Agent 仅靠机器可读文件（不读散文、不问人），能否正确调用/消费/扩展？"},
+    {"id": "Q2", "axiom": "axiom2", "name": "反馈", "text": "执行任一操作后，能否程序化判断成功/失败/失败原因？"},
+    {"id": "Q3", "axiom": "axiom3", "name": "恢复", "text": "任一长流程中断后重跑，是否安全且不重复副作用？"},
+    {"id": "Q4", "axiom": "axiom4", "name": "安全", "text": "能否在不造成不可逆损害的前提下自由试错？"}
+  ],
+  "levels": [
+    {"id": "L0", "name": "人类原生", "requires": []},
+    {"id": "L1", "name": "契约就绪", "requires": ["axiom1"]},
+    {"id": "L2", "name": "闭环就绪", "requires": ["axiom1", "axiom2", "axiom3"]},
+    {"id": "L3", "name": "自治就绪", "requires": ["axiom1", "axiom2", "axiom3", "axiom4"]}
+  ],
+  "axioms": [
+    {
+      "id": "axiom1",
+      "ord": 1,
+      "name": "确定性契约",
+      "en": "Determinism over Inference",
+      "clauses": [
+        {"id": "A1.1", "level": "MUST", "text": "接口契约机器可读（类型/Schema/IDL），非仅散文", "verify": "存在可被解析器加载的契约文件（schema/类型/IDL 解析通过、非空），且覆盖全部公开入口。"},
+        {"id": "A1.2", "level": "MUST", "text": "同一事实单一真源 + 派生物自动生成 + 自动校验锁一致", "verify": "重跑生成命令后 diff 派生物为空；篡改派生物后校验门禁须报错（漂移被拦）。"},
+        {"id": "A1.3", "level": "MUST", "text": "版本兼容性机器可判定（SemVer + 显式兼容语义）", "verify": "版本号符合 SemVer 正则；存在机器可读的兼容性规则/changelog，可程序判定两版本是否破坏。"},
+        {"id": "A1.4", "level": "SHOULD", "text": "能力/入口有机器可读发现清单", "verify": "存在固定路径的发现清单（如 manifest/llms.txt/AGENTS.md），解析后列出的入口与实际一一对应。"},
+        {"id": "A1.5", "level": "SHOULD", "text": "人读叙事 与 Agent 契约 分离", "verify": "契约文件与叙事文档不同文件；删掉所有叙事文档，契约仍完整可用。"},
+        {"id": "A1.6", "level": "SHOULD", "text": "约束 Agent 的规则分层：机械可执行/拒止的强制配置 与 参考叙事 分开", "verify": "存在被工具实际读取并能拒止违规操作的配置（如 deny/allow 规则）；纯散文规则不计入硬约束。"}
+      ]
+    },
+    {
+      "id": "axiom2",
+      "ord": 2,
+      "name": "可验证闭环",
+      "en": "Closed-Loop Verifiability",
+      "clauses": [
+        {"id": "A2.1", "level": "MUST", "text": "每操作返回机器可读结果（结构化输出 + 语义化退出码/状态）", "verify": "每操作的成功路径返回可解析结构（JSON/对象/枚举）且退出码/状态与语义一致，无「静默成功」。"},
+        {"id": "A2.2", "level": "MUST", "text": "失败机器可分类（错误码/类型），非仅自然语言消息", "verify": "每类失败带稳定 code/类型，可被 ==/模式匹配分支；改文案不影响分类。"},
+        {"id": "A2.3", "level": "SHOULD", "text": "失败分类含可操作维度（错误域 + 是否可重试）", "verify": "失败结果可程序化读出错误域与可重试标记，据此自动选择重试/改参/放弃，无需人读。"},
+        {"id": "A2.4", "level": "SHOULD", "text": "产物带 provenance（输入指纹 + 代码版本 + 执行者 + 时间）", "verify": "产物旁存在元数据，四要素字段非空且可解析；据此能另起一次独立复算并比对。"},
+        {"id": "A2.5", "level": "SHOULD", "text": "构建/产出可复现", "verify": "同输入两次构建，产物哈希一致（或差异仅在白名单的时间戳字段内）。"}
+      ]
+    },
+    {
+      "id": "axiom3",
+      "ord": 3,
+      "name": "可恢复状态",
+      "en": "Resumable State",
+      "clauses": [
+        {"id": "A3.1", "level": "MUST", "text": "长流程幂等或可断点续跑，中断重跑不重复副作用", "verify": "中途 kill 后重跑，副作用计数不增、数据无重复/损坏（同「恢复」四问）。"},
+        {"id": "A3.2", "level": "MUST", "text": "状态外置于持久载体，非仅存于上下文/隐藏全局态", "verify": "进程结束后状态仍可从持久载体（文件/库/对象存储）读出；冷启动可据此续跑。"},
+        {"id": "A3.3", "level": "MUST", "text": "运行期约束/规则也外置于持久载体，非仅存于会话对话", "verify": "清空/压缩会话上下文后，约束仍生效（来自持久配置而非对话记忆）。"},
+        {"id": "A3.4", "level": "SHOULD", "text": "操作幂等（幂等键/期望状态收敛）", "verify": "同一请求带同一幂等键执行 N 次，终态等同执行 1 次。"}
+      ]
+    },
+    {
+      "id": "axiom4",
+      "ord": 4,
+      "name": "安全边界",
+      "en": "Safe-by-Default Boundaries",
+      "clauses": [
+        {"id": "A4.1", "level": "MUST", "text": "不可逆/外发/破坏性操作 显式确认或可回滚", "verify": "默认（无确认标志）调用该类操作时被拒绝或仅预览；或执行后存在可程序触发的回滚路径。"},
+        {"id": "A4.2", "level": "MUST", "text": "硬性安全边界由外部机制强制（沙箱/权限/拒止规则），AI 自检非唯一防线", "verify": "禁用/绕过 Agent 自身判断后，边界仍由外部层（OS 沙箱/权限系统）拦截不可逆操作。"},
+        {"id": "A4.3", "level": "SHOULD", "text": "提供 dry-run/preview", "verify": "存在 dry-run 开关，开启后无任何真实副作用、仅输出将发生的变更。"},
+        {"id": "A4.4", "level": "SHOULD", "text": "最小权限 + 变更可审计", "verify": "授予的权限集可枚举且无多余项；每次变更留下不可否认的审计记录（谁/何时/改了什么）。"}
+      ]
+    }
+  ]
+}

@@ -4,20 +4,35 @@
 
 ## 现状（2026-06-07）
 
-- `SPEC.md` **v0.1 草案成型**：四公理（确定性契约 / 可验证闭环 / 可恢复状态 / 安全边界）
-  + 四问验收 + L0–L3 成熟度 + 跨 6 类项目对照表 + 与现有标准（MCP/OpenAPI/llms.txt/IaC/SemVer）映射。
-- `CHECKLIST.md` 初版：四问 + 每公理 MUST 逐条（派生自 SPEC）。
-- 参考实现 `../nfra-penalty-pipeline`（数据产线象限）：① 确定性契约、② 可验证闭环、④ 安全边界 已落地，③ 可恢复状态本已达标。
-- 本仓已 git init + 首次 commit。
+- **待办 1–6 全部完成**，规范 **v0.1.0 · Draft** 结构成型。
+- `SPEC.md`：四公理（各含 MUST/SHOULD + 1 正 1 反例）+ 四问验收 + L0–L3 成熟度 + §4 标准精确映射（对照表）+ 附录 A 跨 6 类对照表。命名 **ANS = Agent-Native Specification**，授权 CC-BY-4.0。
+- 派生与配套：`CHECKLIST.md`（每条配「→ 验证」）、`ASSESSMENT.md`（确定性判级模板）、`GOVERNANCE.md`（治理演进）、`CHANGELOG.md`、`LICENSE`。
+- 四条规范条目经 **Codex/Claude Code/MCP 调研**校准（见决策日志）。
+- 参考实现 `../nfra-penalty-pipeline`（数据产线象限）：①②④ 已落地，③ 本已达标。
+- 机器可读契约 `ans.json` + 门禁 `tools/ans-lint.py`（正反验证通过，21/21 checks）已就位 → 本仓自身**达 L1**（机器可读契约 + 派生锁一致）；②③亦满足（lint 作为唯一操作返回机读结果+语义退出码、状态全外置）；④对纯文档仓语义弱（git 提供回滚/审计）。
+- **已发布 v0.1.0**（commit + 注解 tag）。
+
+### ANS 自身成熟度自评（dogfood）
+
+| 公理 | sat | 依据 |
+| --- | --- | --- |
+| ① 确定性契约 | ✓ | `ans.json` 机读契约；SPEC 单一真源 + CHECKLIST/ASSESSMENT/ans.json 派生 + lint 锁一致；SemVer + changelog/compatibility |
+| ② 可验证闭环 | ✓ | lint 返回机读 JSON 报告 + 语义化退出码；失败按 check name 可分类；确定性可复现 |
+| ③ 可恢复状态 | ✓ | 状态全外置于文件（STATUS/ans.json/…）；lint 无状态幂等可重跑；约束在持久配置非对话 |
+| ④ 安全边界 | ～ | 纯文档仓无不可逆操作；git 版本控制提供回滚与审计。语义偏弱，不强主张 |
+
+结论：**稳达 L1**，①②③ 满足可论 L2；④ 对本类项目语义弱故不冒进主张 L3。
 
 ## 待办（按优先级）
 
-1. [ ] 起正式名与缩写（现为描述性标题）；定 LICENSE（拟 CC-BY-4.0 或 MIT）。
-2. [ ] 完善 `CHECKLIST.md`：每条 MUST 配「如何机械验证」一句，使其可当评分脚本读。
-3. [ ] 每公理补 1–2 个最小正/反例（技术无关的伪例），供 Agent 对照判断。
-4. [ ] 坐实「与现有标准映射」：给 MCP / OpenAPI / llms.txt / IaC 各指出「满足哪条 MUST」。
-5. [ ] 成熟度自评模板：任意项目填四问 → 输出 L0–L3 + 缺口清单。
-6. [ ] 发布形态：版本化文档 / 网站 / RFC 风；定演进与编号规则。
+1. [x] 起正式名与缩写：**Agent-Native Specification (ANS)**；LICENSE = CC-BY-4.0。已同步 SPEC/README/CLAUDE/KICKOFF。
+2. [x] 完善 `CHECKLIST.md`：四问 + 每条 MUST 均配「→ 验证」一句（技术无关的机械判定法），可当评分脚本读。SPEC 的 MUST 未改，公理一一致性保持。
+3. [x] 每公理补 1 正 1 反例（嵌入对应公理块，技术无关）；并据 Codex/Claude Code/MCP 调研校准四条规范条目，CHECKLIST 已同步。
+4. [x] 坐实「与现有标准映射」：SPEC §4 重写为「标准 × 命中的 MUST/SHOULD」对照表 + 逐标准映射 + 互相独立结论（MCP/OpenAPI/llms.txt/AGENTS.md/IaC/SemVer/OTel/SLSA）。
+5. [x] 成熟度自评模板：新建 `ASSESSMENT.md`（四问 + 逐 MUST 勾选 → 确定性判级算法 → L0–L3 + 缺口清单，附示例）。
+6. [x] 发布形态与演进规则：新建 `GOVERNANCE.md`（规范自身 SemVer 化、Draft/Candidate/Stable 阶段、维护流程、分阶段发布、兼容性声明）+ `CHANGELOG.md`；SPEC 版本规整为 0.1.0(Draft)。
+7. [x] **发布 v0.1.0**：commit 本批改动 + 打注解 tag `v0.1.0`（GOVERNANCE §4 阶段一 MUST）。
+8. [x] 机器可读契约 + 自动门禁：新建 `ans.json`（19 条 + 四问 + 级别）、`tools/ans-lint.py`（一致性门禁，正反验证均通过）、`changelog.json`、`compatibility.json`。本仓自身据此满足公理① A1.1/A1.2。
 
 ## 决策日志
 
@@ -25,8 +40,14 @@
 - 2026-06-07 采用 **RFC 2119** 规范语言，做成可判定合规的 spec 而非随笔。
 - 2026-06-07 四公理由「人类 vs Agent 认知差异」**降秩**得出（确定性/反馈/恢复/安全），四者互相独立。
 - 2026-06-07 本仓**以身作则**遵守自身规范：SPEC 单一真源、CHECKLIST 派生同步、STATUS 状态外置。
+- 2026-06-07 正式名定为 **Agent-Native Specification (ANS)**：去掉 "Software"，范围不限软件、更通用；中文名《Agent-Native 规范》。
+- 2026-06-07 LICENSE 选 **CC-BY-4.0**：规范文档应允许自由传播与改编、署名即可，与 W3C/IETF 风格 spec 一致（非代码故不用 MIT）。
+- 2026-06-07 待办7/8完成：建 `ans.json`（机器可读契约，SPEC 的结构化投影）+ `tools/ans-lint.py`（零依赖、语义化退出码、正反验证：正向 21/21 PASS、负向篡改 level/删条目均 exit 1）+ `changelog.json`/`compatibility.json`。门禁从 GOVERNANCE「人工核对」升级为自动 lint。本仓自此满足公理① A1.1（机读契约）/A1.2（派生锁一致），回应「他人如何消费 ANS」：读 ans.json + 填 ASSESSMENT 自评 + 按 tag/id 引用 + 比 compatibility.json。已 commit + 打 tag v0.1.0。
+- 2026-06-07 第4/5/6项经 workflow 三 agent 并行起草、主控审校后落地：§4 改为「标准×命中 MUST」对照表；新建 ASSESSMENT.md（判级硬条件仅取 MUST、SHOULD 不降级，与 §3.2 对齐）；新建 GOVERNANCE.md（治理与 SPEC 正交故独立成文，发布渐进式先 git tag+版本化 Markdown，不过度工程化）；条目 id 0.x 期复用 ASSESSMENT 的 `A{公理}.{序}`、1.0 起内嵌。
+- 2026-06-07 调研 **Codex / Claude Code / MCP** 底层机制（AGENTS.md/CLAUDE.md 分层加载、MCP 能力发现与双层错误、session resume/compaction、approval/permission modes、OS 沙箱），带来源。据此：①正反例**嵌入各公理块**（紧贴定义、保持单一真源，不另开 EXAMPLES.md）；②校准四条 —— ①规则分层（强制配置 vs 参考叙事）、②失败分类含错误域+可重试、③运行期约束/规则亦须外置（防上下文压缩丢失）、④硬边界须**外部机制强制**（AI 自检非唯一防线）。四公理独立性不变，CHECKLIST 同步。
 
 ## 关键不变量
 
 - 四公理必须互相独立（砍一根其余无法补全）。
-- SPEC 是单一真源，CHECKLIST 从它派生 —— 二者须始终一致。
+- SPEC 是单一真源；CHECKLIST 与 ASSESSMENT 均从它派生 —— 三者须始终一致（增删 MUST/SHOULD 必同步）。
+- 演进按 GOVERNANCE §3 流程；normative 变更须登记 CHANGELOG 并按 §1 定版。
