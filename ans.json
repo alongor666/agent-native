@@ -1,8 +1,8 @@
 {
   "spec": "Agent-Native Specification",
   "abbrev": "ANS",
-  "version": "0.1.0",
-  "stage": "Draft",
+  "version": "0.2.0",
+  "stage": "Candidate",
   "license": "CC-BY-4.0",
   "rfc2119": true,
   "source": "SPEC.md",

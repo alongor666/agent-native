@@ -138,7 +138,7 @@ check("version ans==changelog", ans["version"] == latest["version"],
       f"ans={ans['version']} changelog={latest['version']}")
 
 # 9. changelog 条目 id 均属 ans
-bad_cl = [c["entryId"] for c in latest["changes"] if c["entryId"] not in set(ans_ids)]
+bad_cl = [c["entryId"] for c in latest["changes"] if c.get("entryId") and c["entryId"] not in set(ans_ids)]
 check("changelog entryIds ⊆ ans", not bad_cl, f"未知 id: {bad_cl}")
 
 # 10. compatibility 字段齐全

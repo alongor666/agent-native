@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.2.0",
+    "bump": "minor",
+    "stage": "Candidate",
+    "date": "2026-06-07",
+    "changes": [
+      {"change": "stage", "detail": "Draft→Candidate：冻结结构、进入候选期（GOVERNANCE §2 退出条件已满足：四公理稳定 + CHECKLIST/SPEC 对齐 + ≥1 参考实现 nfra-penalty-pipeline 实测 L2）。无 normative 条目增删。"}
+    ]
+  },
+  {
     "version": "0.1.0",
     "bump": "minor",
     "stage": "Draft",

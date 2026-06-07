@@ -1,7 +1,7 @@
 # Agent-Native Specification (ANS)
 
 > **Agent-Native Specification** · 中文名《Agent-Native 规范》
-> 版本 0.1.0 · 草案(Draft) · 2026-06-07 · 技术栈无关 · 领域无关
+> 版本 0.2.0 · 候选(Candidate) · 2026-06-07 · 技术栈无关 · 领域无关
 > 授权 [CC-BY-4.0](./LICENSE) · 演进规则见 [GOVERNANCE.md](./GOVERNANCE.md) · 机器可读契约 [`ans.json`](./ans.json)
 
 ## 摘要

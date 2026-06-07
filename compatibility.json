@@ -1,5 +1,13 @@
 [
   {
+    "fromVersion": "0.1.0",
+    "toVersion": "0.2.0",
+    "breaking": false,
+    "removedEntryIds": [],
+    "tightenedEntryIds": [],
+    "note": "阶段跃迁 Draft→Candidate，无 normative 条目增删，向后兼容。"
+  },
+  {
     "fromVersion": null,
     "toVersion": "0.1.0",
     "breaking": false,

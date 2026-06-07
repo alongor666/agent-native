@@ -3,6 +3,15 @@
 依 [GOVERNANCE.md](./GOVERNANCE.md) §3.1 维护；版本跃迁规则见 GOVERNANCE §1。
 格式参照 [Keep a Changelog](https://keepachangelog.com/)。
 
+## [0.2.0] — 2026-06-07 · Candidate
+
+阶段跃迁：Draft → Candidate（结构冻结、进入候选期）。无 normative 条目增删，向后兼容。
+
+### Changed
+- 成熟阶段 **Draft → Candidate**。GOVERNANCE §2 退出条件满足：四公理稳定、CHECKLIST/SPEC 全条目对齐、参考实现 `nfra-penalty-pipeline` 按 ASSESSMENT 模板实测 **L2**（≥1 参考实现验证）。
+- `GOVERNANCE.md`：明确阶段跃迁版本规则（阶段推进计 MINOR；Candidate→Stable 发 1.0.0）+ `0.x` Candidate 与破坏性变更的关系澄清。
+- `tools/ans-lint.py` / `changelog.json`：支持「无 `entryId` 的元数据变更条目」以表达阶段跃迁等非条目变更。
+
 ## [0.1.0] — 2026-06-07 · Draft
 
 首个草案版本，结构成型。
