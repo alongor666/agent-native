@@ -9,6 +9,7 @@
 - 派生与配套：`CHECKLIST.md`（每条配「→ 验证」）、`ASSESSMENT.md`（确定性判级模板）、`GOVERNANCE.md`（治理演进）、`CHANGELOG.md`、`LICENSE`。
 - 四条规范条目经 **Codex/Claude Code/MCP 调研**校准（见决策日志）。
 - 参考实现 `../nfra-penalty-pipeline`（数据产线象限）：按 ASSESSMENT 模板实测 **L2（闭环就绪）**，sat=[T,T,T,F]，距 L3 仅差 A4.1（外发 Release 无确认/回滚）。模板捕捉到该仓自评 L3 时忽略的安全边界缺口 → 自评模板可用且有判别力。
+- 第 2 个独立项目 `../preknow_shanxi`（组织人员分析 + 知识库，nfra 的消费方）：实测 **L0**，sat=[F,T,T,F]——②③全绿却因无数据集版本兼容声明（A1.3）卡在公理①、停 L0（前缀规则"跳级不升级"实例）。补 A1.3 即跳 L1。
 - 机器可读契约 `ans.json` + 门禁 `tools/ans-lint.py`（正反验证通过，26/26 checks）已就位 → 本仓自身**达 L1**（机器可读契约 + 派生锁一致）；②③亦满足（lint 作为唯一操作返回机读结果+语义退出码、状态全外置）；④对纯文档仓语义弱（git 提供回滚/审计）。
 - **已发布 v0.1.0（Draft）→ v0.2.0（Candidate）**（commit + 注解 tag）。
 
@@ -33,6 +34,7 @@
 6. [x] 发布形态与演进规则：新建 `GOVERNANCE.md`（规范自身 SemVer 化、Draft/Candidate/Stable 阶段、维护流程、分阶段发布、兼容性声明）+ `CHANGELOG.md`；SPEC 版本规整为 0.1.0(Draft)。
 7. [x] **发布 v0.1.0**：commit 本批改动 + 打注解 tag `v0.1.0`（GOVERNANCE §4 阶段一 MUST）。
 8. [x] 机器可读契约 + 自动门禁：新建 `ans.json`（19 条 + 四问 + 级别）、`tools/ans-lint.py`（一致性门禁，正反验证均通过）、`changelog.json`、`compatibility.json`。本仓自身据此满足公理① A1.1/A1.2。
+9. [ ] **升 Stable（1.0.0）**：§2 退出条件满 2/3——无 MAJOR 争议 ✓ + ≥2 独立项目自评 ✓（nfra L2 / preknow L0）；**待**公开反馈期 ≥ 一迭代周期无阻断异议（需外部采用/反馈，非本地可即时完成）。
 
 ## 决策日志
 
@@ -47,6 +49,7 @@
 - 2026-06-07 调研 **Codex / Claude Code / MCP** 底层机制（AGENTS.md/CLAUDE.md 分层加载、MCP 能力发现与双层错误、session resume/compaction、approval/permission modes、OS 沙箱），带来源。据此：①正反例**嵌入各公理块**（紧贴定义、保持单一真源，不另开 EXAMPLES.md）；②校准四条 —— ①规则分层（强制配置 vs 参考叙事）、②失败分类含错误域+可重试、③运行期约束/规则亦须外置（防上下文压缩丢失）、④硬边界须**外部机制强制**（AI 自检非唯一防线）。四公理独立性不变，CHECKLIST 同步。
 - 2026-06-07 实跑参考实现 `nfra-penalty-pipeline` 自评（Explore agent 进仓逐条核证 14 判定点 → 套 §2 判级算法）：评级 **L2**，距 L3 差 A4.1（外发 Release 无确认/回滚）。该仓自评 L3、ANS 模板严判 L2，验证模板有判别力、判级算法可机械复现。此为 GOVERNANCE §2 Draft→Candidate 退出条件「≥1 参考实现验证」之证据其一。
 - 2026-06-07 升 **Draft→Candidate**（发 v0.2.0）：§2 退出条件满足（四公理稳定 + CHECKLIST/SPEC 对齐 + nfra 参考实现实测 L2）。决策：阶段跃迁按"加稳定性保证"计 **MINOR**（已补 GOVERNANCE §1 版本规则）；changelog/lint 增「无 `entryId` 元数据变更条目」支持以表达非条目变更。`0.x` 期 Candidate 仍可 MINOR 破坏性修订，结构硬冻结待 `1.0.0` Stable。升 Stable 尚需 ≥2 独立项目自评通过。
+- 2026-06-07 用 `preknow_shanxi` 做第 2 个独立项目自评：评级 **L0**（缺 A1.3 数据集版本兼容声明，虽②③全绿）。至此 §2「≥2 独立项目自评跑通」满足（nfra L2 + preknow L0，跨数据产线/知识库两域，模板均产出确定结论、含 L0 边界，判别力获证）。但升 Stable 三条退出条件仍缺第三条「公开反馈期 ≥ 一迭代周期无阻断异议」——规范新发布无外部反馈期，**暂不升 Stable**。
 - 2026-06-07 PR#1 Codex review（P2）指出 `ans-lint` 未校验 SPEC 正文 → SPEC-only 的 MUST 增删/改 level 会漏过、文档「lint 会拦」属过度承诺。已增强 lint：按**每公理 MUST/SHOULD 条目计数**锁 SPEC↔ans.json（删条目/改 level 即 exit 1，负向验证通过、正向 26/26）；并修正 CLAUDE.md/GOVERNANCE 措辞——lint 锁条目结构，纯措辞逐字一致由维护者保证。
 
 ## 关键不变量
