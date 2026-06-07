@@ -150,6 +150,32 @@ check("compatibility schema", compat_ok, "缺字段")
 check("compatibility covers current", any(r["toVersion"] == ans["version"] for r in compat),
       f"无 toVersion={ans['version']} 记录")
 
+# 11. SPEC 正文 normative 条目结构与 ans.json 对齐（防 SPEC-only 漂移）
+#     SPEC 是真源，但其条目文本与 ans/CHECKLIST 措辞不同（完整句 vs 精简），无法逐字比对；
+#     故按「每公理的 MUST/SHOULD 条目计数」锁结构：SPEC 增删条目或改 level 即被拦。
+#     纯措辞改动（不增删、不改 level）不被此项捕获，须由维护者保证（见 GOVERNANCE / CLAUDE.md）。
+spec_parts = re.split(r"^### 公理", spec, flags=re.M)[1:]
+check("SPEC 公理块==4", len(spec_parts) == 4, f"找到 {len(spec_parts)} 个公理块")
+for i, ax in enumerate(ans["axioms"]):
+    if i >= len(spec_parts):
+        break
+    seg = spec_parts[i]
+    a, b = seg.find("规范要求"), seg.find("反模式")
+    body = seg[a:b] if a >= 0 and b >= 0 else ""
+    sm = ssh = 0
+    for ln in body.splitlines():
+        t = ln.strip()
+        if not t.startswith("- "):
+            continue
+        if "**MUST**" in t:
+            sm += 1
+        elif "**SHOULD**" in t:
+            ssh += 1
+    am = sum(1 for c in ax["clauses"] if c["level"] == "MUST")
+    ash = sum(1 for c in ax["clauses"] if c["level"] == "SHOULD")
+    check(f"{ax['id']} SPEC 条目数 ans==SPEC", (sm, ssh) == (am, ash),
+          f"SPEC={sm}M/{ssh}S vs ans={am}M/{ash}S")
+
 # ================= 报告 =================
 status = "pass" if not errors else "fail"
 report = {"status": status, "errors": errors, "warnings": warnings,

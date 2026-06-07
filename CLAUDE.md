@@ -17,10 +17,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `CHECKLIST.md` —— 验收清单，每条 MUST 配「→ 验证」机械判定法；条目 text 是权威文案。
   - `ASSESSMENT.md` —— 成熟度自评模板，条目带稳定 id `A{公理}.{序}`（A1.1–A4.4）+ `[MUST]/[SHOULD]` 标注 + 确定性判级算法。
   - `ans.json` —— 机器可读契约（19 条 normative 条目，clause `text` 与 CHECKLIST **逐字一致**、`id` 与 ASSESSMENT 一致）。供外部项目零散文消费。
-- `tools/ans-lint.py` 锁上述一致性：校验 ans.json ↔ SPEC/CHECKLIST/ASSESSMENT/changelog 的条目集合、level、数量、版本、级别定义。**任一处漂移即 exit 1**。
+- `tools/ans-lint.py` 锁一致性：校验 `ans.json` ↔ CHECKLIST/ASSESSMENT/changelog 的条目 id 集合、level、数量、版本；并按**每公理 MUST/SHOULD 条目计数**校验 SPEC 正文 ↔ ans.json（防 SPEC-only 漂移）。**增删条目或改 level 即 exit 1**；纯措辞改动（不增删、不改 level）不被捕获，靠维护者保证。
 - 治理层：`GOVERNANCE.md`（规范自身的 SemVer/阶段/演进流程/兼容性）；`changelog.json` + `compatibility.json` 是版本变更的机读形态。
 
-**最易踩的依赖链**：改 `SPEC.md` 的任一 normative 条目，必须同步改 `CHECKLIST.md` 对应行（text 逐字）+ `ASSESSMENT.md` 勾选项与 `MUST(k)` 集合 + `ans.json` clause + `changelog.json`，然后跑 lint。漏任一处，lint 会拦。
+**最易踩的依赖链**：改 `SPEC.md` 增删 normative 条目或调整 MUST/SHOULD，必须同步 `CHECKLIST.md`（text 逐字）+ `ASSESSMENT.md`（勾选项与 `MUST(k)` 集合）+ `ans.json` clause + `changelog.json`，再跑 lint。增删条目或改 level 漏同步会被 lint 拦（exit 1）；但**纯文本措辞的逐字一致 lint 不强校验，须你自己保证**。
 
 四公理（互相独立，由「人类 vs Agent 认知差异」降秩得出）：① 确定性契约 / ② 可验证闭环 / ③ 可恢复状态 / ④ 安全边界。成熟度 L0–L3 见 SPEC §3。
 
