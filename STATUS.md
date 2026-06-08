@@ -52,6 +52,7 @@
 - 2026-06-07 用 `preknow_shanxi` 做第 2 个独立项目自评：评级 **L0**（缺 A1.3 数据集版本兼容声明，虽②③全绿）。至此 §2「≥2 独立项目自评跑通」满足（nfra L2 + preknow L0，跨数据产线/知识库两域，模板均产出确定结论、含 L0 边界，判别力获证）。但升 Stable 三条退出条件仍缺第三条「公开反馈期 ≥ 一迭代周期无阻断异议」——规范新发布无外部反馈期，**暂不升 Stable**。
 - 2026-06-07 为第 2 项目 `preknow_shanxi` 补 A1.3（跨仓 PR#25）：新增数据集版本清单（SemVer + 机读兼容语义 major/minor/patch + 上游 nfra 版本链）+ `check_dataset_manifest.py` 门禁（正向绿/负向篡改被拦）。公理①补满 → **L0 升 L1**。dogfood 验证 ANS「自评诊断缺口 → 按缺口清单最小修复 → 升级」闭环可用。两参考实现现均 ≥L1（nfra L2 / preknow L1）。
 - 2026-06-07 PR#1 Codex review（P2）指出 `ans-lint` 未校验 SPEC 正文 → SPEC-only 的 MUST 增删/改 level 会漏过、文档「lint 会拦」属过度承诺。已增强 lint：按**每公理 MUST/SHOULD 条目计数**锁 SPEC↔ans.json（删条目/改 level 即 exit 1，负向验证通过、正向 26/26）；并修正 CLAUDE.md/GOVERNANCE 措辞——lint 锁条目结构，纯措辞逐字一致由维护者保证。
+- 2026-06-08 **项目迁移**：三仓从 iCloud 迁回本地 `~/Developer`。起因——iCloud 同步损坏 `.git`，迁移中 nfra 在 iCloud 的仓整个丢失（已从 GitHub 重建）；且 `~/Desktop` 也开了「桌面与文稿」iCloud 同步、同样不安全，故弃 Desktop 改 `~/Developer`（iCloud 不管）。布局定为「**代码本地 `~/Developer/<仓>` + 仅产物 iCloud `…/CloudDocs/products/<仓>`**」，写入各仓 CLAUDE.md「项目位置」节（公理③状态外置，新会话读 CLAUDE.md 即知）。三仓从 GitHub 重新 clone（权威源）、preknow 私密 xlsx 从备份补回（GitHub 上没有）、agent-native lint 与 preknow 门禁均验证完好。
 
 ## 关键不变量
 

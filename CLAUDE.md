@@ -4,6 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 本仓制定《Agent-Native 规范》(Agent-Native Specification, ANS) —— 一份技术栈/领域无关的规范：当软件的开发者与消费者都是 AI Agent 时如何设计软件。**工作方式本身必须遵守规范定义的四公理**（以身作则）。
 
+## 项目位置（2026-06-08 迁移后）
+
+**代码在本地 `~/Developer/agent-native`，不放 iCloud**——iCloud（含开了同步的 `~/Desktop`）会损坏 `.git`，2026-06-08 曾致 iCloud 里的 nfra 仓整个丢失。三仓同布局：`~/Developer/{agent-native,nfra-penalty-pipeline,preknow_shanxi}`。
+
+- 权威源：GitHub `alongor666/agent-native`；本地丢失可 `git clone` 重建。
+- **产物**副本在 iCloud `…/CloudDocs/products/agent-native/`（`ans.json` + 规范 md），供跨设备访问；规范发布后按需刷新产物副本。
+- 新会话在 `~/Developer/agent-native` 启动，先读 `STATUS.md`。
+
 ## 这是什么仓
 
 一个**规范文档仓**，不是应用代码项目。唯一可执行物是一致性门禁脚本 `tools/ans-lint.py`（零依赖 Python3）。产物是 Markdown 规范 + 机器可读契约 JSON。
